@@ -2,10 +2,6 @@
 node_modules/*
 npm-debug.log
 
-# TypeScript
-src/compiled
-/dist
-
 # JetBrains
 .idea
 .project
