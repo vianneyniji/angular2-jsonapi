@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var JsonApiMetaModel = /** @class */ (function () {
+var JsonApiMetaModel = (function () {
     function JsonApiMetaModel() {
         this.links = [];
     }

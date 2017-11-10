@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var JsonApiQueryData = /** @class */ (function () {
+var JsonApiQueryData = (function () {
     function JsonApiQueryData(jsonApiModels, metaData) {
         this.jsonApiModels = jsonApiModels;
         this.metaData = metaData;

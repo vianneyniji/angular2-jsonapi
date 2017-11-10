@@ -1,9 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var find_1 = require("lodash-es/find");
-var includes_1 = require("lodash-es/includes");
 var _ = require("lodash");
-var JsonApiModel = /** @class */ (function () {
+var JsonApiModel = (function () {
     // tslint:disable-next-line:variable-name
     function JsonApiModel(_datastore, data) {
         this._datastore = _datastore;
@@ -73,24 +72,20 @@ var JsonApiModel = /** @class */ (function () {
                 var relationship = data.relationships ? data.relationships[metadata.relationship] : null;
                 if (relationship && relationship.data && relationship.data.length > 0) {
                     var allModels = [];
-                    var modelTypesFetched = [];
                     for (var _a = 0, _b = Object.keys(relationship.data); _a < _b.length; _a++) {
                         var typeIndex = _b[_a];
                         var typeName = relationship.data[typeIndex].type;
-                        if (!includes_1.default(modelTypesFetched, typeName)) {
-                            modelTypesFetched.push(typeName);
+                        // tslint:disable-next-line:max-line-length
+                        var modelType = Reflect.getMetadata('JsonApiDatastoreConfig', this._datastore.constructor).models[typeName];
+                        if (modelType) {
                             // tslint:disable-next-line:max-line-length
-                            var modelType = Reflect.getMetadata('JsonApiDatastoreConfig', this._datastore.constructor).models[typeName];
-                            if (modelType) {
-                                // tslint:disable-next-line:max-line-length
-                                var relationshipModels = this.getHasManyRelationship(modelType, relationship.data, included, typeName, level);
-                                if (relationshipModels.length > 0) {
-                                    allModels = allModels.concat(relationshipModels);
-                                }
+                            var relationshipModels = this.getHasManyRelationship(modelType, [relationship.data[typeIndex]], included, typeName, level);
+                            if (relationshipModels.length > 0) {
+                                allModels = allModels.concat(relationshipModels);
                             }
-                            else {
-                                throw { message: 'parseHasMany - Model type for relationship ' + typeName + ' not found.' };
-                            }
+                        }
+                        else {
+                            throw { message: 'parseHasMany - Model type for relationship ' + typeName + ' not found.' };
                         }
                         if (allModels.length > 0) {
                             this[metadata.propertyName] = allModels;
